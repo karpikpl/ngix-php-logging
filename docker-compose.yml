@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  wordpress:
+    # image: mcr.microsoft.com/appsvc/wordpress-debian-php:8.3
+    build:
+      context: .
+      dockerfile: azure.Dockerfile
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USERNAME: wordpress
+      DATABASE_PASSWORD: wordpress
+      DATABASE_NAME: wordpress
+      WEBSITES_ENABLE_APP_SERVICE_STORAGE: true
+    ports:
+      - "80:80"
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
